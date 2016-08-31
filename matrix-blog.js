@@ -116,9 +116,7 @@ MatrixBlog.prototype.processChunk = function(message) {
             var $user = $('<h4 class="user">');
             var info = this.getUserInfo(message.getSender());
             $user.append($('<span class="nick">').text(info.nick));
-            $user.append($('<span class="host">').text(info.host));
-            var $time = $("<time>").text(this.makeTimeString(message.getTs()));
-            $item.append($time);
+            $user.append($("<time>").text(this.makeTimeString(message.getTs()));
         }
         else {
             var $item = $("ul.posts li:first");
