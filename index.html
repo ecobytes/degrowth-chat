@@ -2,13 +2,13 @@
     <head>
         <title>Matrix blog v.2</title>
         <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
-        <script src="../js/jquery-1.4.2.min.js"></script>
+        <script src="https://code.jquery.com/jquery-1.4.2.min.js"></script>
         <script src="lib/browser-matrix-0.5.2.min.js"></script>
         <script src="matrix-blog.js"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <style type="text/css">
 body {
-    background: #888;
+    background: #eee;
     font-family: 'Roboto', sans-serif;
 }
 #chat {
@@ -77,12 +77,12 @@ time {
     </head>
     <body>
         <div id="chat">Loading...</div>
-        <a href="https://github.com/simeng/matrix-blog">Matrix Blog</a> - a test app by @simeng:matrix.org for using <a href="http://matrix.org/">Matrix</a> as a Blog-like system.
+        <a href="https://vector.im/beta/#/room/#degrowth2016:matrix.org">Click here to join the conversation.</a>
         <script type="text/javascript">
             var blog = new MatrixBlog({
                 selector: '#chat',
-                room: '#blog:irc.h4x.no',
-                homeServer: 'https://irc.h4x.no:8448'
+                room: '#degrowth2016:matrix.org',
+                homeServer: 'https://matrix.org'
             });
         </script>
     </body>

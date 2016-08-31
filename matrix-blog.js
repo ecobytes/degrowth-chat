@@ -35,9 +35,9 @@ var MatrixBlog = function(settings) {
             self.endKey = data.end;
         });
 
-        self.client.on('User.presence', function (evt, user) {
-            self.processPresence(evt, user);
-        });
+//      self.client.on('User.presence', function (evt, user) {
+//          self.processPresence(evt, user);
+//      });
 
         self.client.registerGuest({}, function (err, data) {
             self.client._http.opts.accessToken = data.access_token;
