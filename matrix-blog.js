@@ -2,7 +2,7 @@
 
 var MatrixBlog = function(settings) {
     var self = this;
-    
+
     this.last = null;
     this.settings = settings;
     this.settings.locale = this.settings.locale || 'nb-NO';
@@ -44,7 +44,7 @@ var MatrixBlog = function(settings) {
             self.client.credentials.userId = data.user_id;
 
             $root.empty();
-            $root.append(self.$people);
+//            $root.append(self.$people);
             $root.append(self.$posts);
 
             self.client.peekInRoom(self.roomId);
@@ -64,8 +64,8 @@ MatrixBlog.prototype.getUserInfo = function(user_id) {
 MatrixBlog.prototype.makeTimeString = function(ts) {
     var ret = new Date();
     ret.setTime(ts);
-    var options = { 
-        hour: '2-digit', 
+    var options = {
+        hour: '2-digit',
         minute: '2-digit',
         day: 'numeric',
         month: 'short'
@@ -84,7 +84,7 @@ MatrixBlog.prototype.processPresence = function(evt, user) {
             var mxc = user.avatarUrl;
             url = this.client.mxcUrlToHttp(mxc, 32, 32, "crop");
         }
-        
+
         var $item = this.$people.find("[data-user-id=\"" + user.userId + "\"");
         if ($item.length > 0) {
             $item = $($item[0]);
@@ -127,8 +127,8 @@ MatrixBlog.prototype.processChunk = function(message) {
         if (message.event.content.msgtype == 'm.text') {
             $item.addClass('text');
             var $body = $('<div class="body">').text(message.event.content.body);
-            $item.append($user);
-            $item.append($body);
+            $item.prepend($user);
+            $item.prepend($body);
         }
         else if (message.event.content.msgtype == 'm.image') {
             $item.addClass('image');
@@ -151,4 +151,3 @@ MatrixBlog.prototype.processChunk = function(message) {
         };
     }
 };
-
