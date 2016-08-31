@@ -10,7 +10,7 @@ var MatrixBlog = function(settings) {
     this.client = matrixcs.createClient({
         baseUrl: settings.homeServer
     });
-
+    console.log(this.client);
     this.roomId = null;
     this.endKey = null;
     this.$posts = $('<ul class="posts">');
@@ -20,7 +20,7 @@ var MatrixBlog = function(settings) {
     this.client.getRoomIdForAlias(this.settings.room, function (err, data) {
         var $root = $(self.settings.selector);
         self.roomId = data.room_id;
-
+        console.log(data);
         // client.sendTyping(roomId, true, 5000, function (err, data) {})
 
         // fetch the last 50 events from our room as inital state
@@ -39,6 +39,15 @@ var MatrixBlog = function(settings) {
 //          self.processPresence(evt, user);
 //      });
 
+// http://stackoverflow.com/a/5347882/1959568
+// this.$posts.children().each(function(i,li){this.$posts.prepend(li)});
+
+/*
+        var $posts = $("ul.posts");
+        var i = $posts.childNodes.length;
+        while (i--)
+          $posts.appendChild($posts.childNodes[i]);
+*/
         self.client.registerGuest({}, function (err, data) {
             self.client._http.opts.accessToken = data.access_token;
             self.client.credentials.userId = data.user_id;
@@ -117,16 +126,22 @@ MatrixBlog.prototype.processChunk = function(message) {
             var info = this.getUserInfo(message.getSender());
             $user.append($('<span class="nick">').text(info.nick));
             $user.append($("<time>").text(this.makeTimeString(message.getTs())));
+
+// TODO: x
+
         }
         else {
             var $item = $("ul.posts li:first");
+
+// TODO: y
+
         }
 
         if (message.event.content.msgtype == 'm.text') {
             $item.addClass('text');
             var $body = $('<div class="body">').text(message.event.content.body);
-            $item.prepend($user);
-            $item.prepend($body);
+            $item.append($user);
+            $item.append($body);
         }
         else if (message.event.content.msgtype == 'm.image') {
             $item.addClass('image');
@@ -142,7 +157,9 @@ MatrixBlog.prototype.processChunk = function(message) {
             var body = $('<div class="body">').text(message.getSender() + " " + message.event.content.body);
             $item.append(body);
         }
+
         this.$posts.prepend($item);
+
         this.last = {
             userId: message.getSender(),
             ts: message.getTs()
