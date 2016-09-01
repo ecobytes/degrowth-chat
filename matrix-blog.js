@@ -133,7 +133,7 @@ MatrixBlog.prototype.processChunk = function(message) {
 // TODO: x
         }
         else {
-            var $item = $("ul.posts li:first");
+            var $item = $("ul.posts li:last");
 // TODO: y
         }
 
@@ -158,7 +158,7 @@ MatrixBlog.prototype.processChunk = function(message) {
             $item.append(body);
         }
 
-        this.$posts.prepend($item);
+        this.$posts.append($item);
 
         this.last = {
             userId: message.getSender(),
