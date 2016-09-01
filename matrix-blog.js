@@ -11,6 +11,7 @@ var MatrixBlog = function(settings) {
         baseUrl: settings.homeServer
     });
     console.log(this.client);
+    console.log("this.client");
     this.roomId = null;
     this.endKey = null;
     this.$posts = $('<ul class="posts">');
@@ -20,13 +21,17 @@ var MatrixBlog = function(settings) {
     this.client.getRoomIdForAlias(this.settings.room, function (err, data) {
         var $root = $(self.settings.selector);
         self.roomId = data.room_id;
+        console.log("room data");
         console.log(data);
         // client.sendTyping(roomId, true, 5000, function (err, data) {})
 
         // fetch the last 50 events from our room as inital state
         self.client.on('Room.timeline', function (evt, room, toStartOfTimeline) {
             if (room.roomId == self.roomId) {
-                self.processChunk(evt);
+                if (!evt.event.redacts && !evt.event.redacted_because) {
+                  console.log(evt.event);
+                  self.processChunk(evt);
+                }
             }
             else {
                 console.log("Ignoring room id: " + data.rooms[j].room_id);
@@ -121,27 +126,22 @@ MatrixBlog.prototype.processChunk = function(message) {
         if (!this.last || this.last.userId != message.getSender() ||
                 message.getTs() > this.last.ts + this.settings.groupPostDuration * 1000) {
             var $item = $("<li>");
-
             var $user = $('<h4 class="user">');
             var info = this.getUserInfo(message.getSender());
             $user.append($('<span class="nick">').text(info.nick));
             $user.append($("<time>").text(this.makeTimeString(message.getTs())));
-
 // TODO: x
-
         }
         else {
             var $item = $("ul.posts li:first");
-
 // TODO: y
-
         }
 
         if (message.event.content.msgtype == 'm.text') {
             $item.addClass('text');
             var $body = $('<div class="body">').text(message.event.content.body);
             $item.append($user);
-            $item.append($body);
+            $item.prepend($body);
         }
         else if (message.event.content.msgtype == 'm.image') {
             $item.addClass('image');
